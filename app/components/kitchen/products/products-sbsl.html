@@ -1,0 +1,169 @@
+﻿<div ng-controller="ProductsSbslController as vm">
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#addProductModal" modal><i class="material-icons">add</i></a>
+    </div>
+    <div id="addProductModal" class="modal col s12">
+        <form name="addProductForm" class="modal-content">
+            <h4>Nyt produkt</h4>
+            <div class="row">
+                <div class="col s6">
+                    <img ng-src="{{vm.newProdImgSrc}}" src="{{vm.defaultSrc}}" class="fit" />
+                    <div class="preloader-wrapper big active" ng-show="vm.uploading">
+                        <div class="spinner-layer spinner-green-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file" onchange="angular.element(this).scope().vm.getFileNewProd(this)" id="lool" required>
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" ng-model="vm.newProduct.imageName" type="text" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-field col s6">
+                    <input id="name" type="text" class="validate" ng-model="vm.newProduct.name" required>
+                    <label for="name">Navn</label>
+                </div>
+                <div class="input-field col s6 m4">
+                    <input id="purchasePrice" type="number" class="validate" ng-model="vm.newProduct.purchasePrice" ng-change="vm.purchasePriceChange(vm.newProduct)" placeholder="3.5 kr" required>
+                    <label class="active" for="purchasePrice">Indkøbspris</label>
+                </div>
+                <div class="input-field col s6 m2">
+                    <input id="markup" type="number" min="0" step="1" class="validat" ng-model="vm.newProduct.markup" ng-change="vm.markupChange(vm.newProduct)" placeholder="10%" required>
+                    <label class="active" for="markup">Markup</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="retailPrice" type="number" class="validate" ng-model="vm.newProduct.retailPrice" ng-change="vm.retailPriceChange(vm.newProduct)" placeholder="3.85 kr" required>
+                    <label class="active" for="retailPrice">Salgspris</label>
+                </div>
+            </div>
+        </form>
+        <div class="modal-footer">
+            <button ng-disabled="addProductForm.$invalid" ng-click="vm.createProduct(vm.newProduct)" class="waves-effect waves-light btn modal-close modal-action">Tilføj</button>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat">Luk</a>
+        </div>
+    </div>
+    <div id="editProductModal" class="modal col s12">
+        <form name="editProductForm" class="modal-content">
+            <h4>Redigér produkt</h4>
+            <div class="row">
+                <div class="col s6">
+                    <img ng-class="{'hidden': !vm.editProdImgSrc}" ng-src="{{vm.editProdImgSrc}}" class="fit"/>
+                    <div ng-class="{'hidden': !!vm.editProdImgSrc}">
+                        <cl-image public-id="{{vm.editProduct.imgId}}" class="fit">
+                            <cl-transformation crop="fit" height="55" quality="80" format="png"/>
+                        </cl-image>
+                    </div>
+                    <div class="preloader-wrapper big active" ng-show="vm.uploading">
+                        <div class="spinner-layer spinner-green-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file" onchange="angular.element(this).scope().vm.getFileEditProd(this)" required>
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" ng-model="vm.editProduct.imageName" type="text" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-field col s6">
+                    <input id="editName" type="text" class="validate" ng-model="vm.editProduct.name" required>
+                    <label class="active" for="editName">Navn</label>
+                </div>
+                <div class="input-field col s6 m4">
+                    <input id="editPurchasePrice" type="number" class="validate" ng-model="vm.editProduct.purchasePrice" ng-change="vm.purchasePriceChange(vm.editProduct)" placeholder="3.5 kr" required>
+                    <label class="active" for="editPurchasePrice">Indkøbspris</label>
+                </div>
+                <div class="input-field col s6 m2">
+                    <input id="editMarkup" type="number" min="0" step="1" class="validat" ng-model="vm.editProduct.markup" ng-change="vm.markupChange(vm.editProduct)" placeholder="10%" required>
+                    <label class="active" for="editMarkup">Markup</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="editRetailPrice" type="number" class="validate" ng-model="vm.editProduct.retailPrice" ng-change="vm.retailPriceChange(vm.editProduct)" placeholder="3.85 kr" required>
+                    <label class="active" for="editRetailPrice">Salgspris</label>
+                </div>
+            </div>
+        </form>
+        <div class="modal-footer">
+            <button ng-disabled="editProductForm.$invalid" ng-click="vm.asd(vm.editProduct)" class="waves-effect waves-light btn modal-close modal-action">Gem ændringer</button>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat">Luk</a>
+        </div>
+    </div>
+    <div id="deleteProductModal" class="modal col s12">
+        <form name="productForm" class="modal-content">
+            <h4>Slet produkt</h4>
+            <span>Du er ved at slette <b>{{vm.deleteProduct.name}}</b>. Er du sikker på at du vil slette?</span>
+        </form>
+        <div class="modal-footer">
+            <button ng-disabled="productForm.$invalid" ng-click="vm.safeProducts.$remove(vm.deleteProduct)" class="waves-effect waves-light btn red modal-close modal-action">Slet</button>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat">Fortryd</a>
+        </div>
+    </div>
+    <table class="highlight responsive-table ehp-table" table-search="vm.service.search" st-table="vm.products" st-safe-src="vm.safeProducts">
+        <thead>
+            <tr>
+                <th>Billede</th>
+                <th>Navn</th>
+                <th>Indkøbspris</th>
+                <th>Markup</th>
+                <th>Salgspris</th>
+                <th>Aktiv</th>
+                <th>Ret</th>
+                <th>Slet</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="prod in vm.products">
+                <td height="55" width="55">
+                    <cl-image public-id="{{prod.imgId}}" class="thumbnail inline" format="png">
+                        <cl-transformation height="55" width="55" crop="fill" radius="50" />
+                    </cl-image>
+                </td>
+                <td>{{prod.name}}</td>
+                <td>{{prod.purchasePrice}} kr</td>
+                <td>{{prod.markup}}%</td>
+                <td>{{prod.retailPrice}} kr</td>
+                <td>
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" ng-model="prod.active" ng-change="vm.safeProducts.$save(prod)">
+                            <span class="lever no-margin"></span>
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    <a class="waves-effect waves-teal grey-text btn-flat modal-trigger" ng-click="vm.openEditModal(prod)">
+                        <i class="material-icons">edit</i>
+                    </a>
+                </td>
+                <td>
+                    <a class="waves-effect waves-teal grey-text" ng-click="vm.openDeleteModal(prod)">
+                        <i class="material-icons">delete</i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

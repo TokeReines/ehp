@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+    <base href="/">
+    <title>College Manager</title>
+    <link rel="stylesheet" type="text/css" href="assets/lib/materialize/dist/css/materialize.css" media="screen,projection" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" type="text/css" href="assets/scss/css/site.css" media="screen,projection" />
+    <link href="assets/lib/mdi/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
+    <!-- Jquery -->
+    <script type="text/javascript" src="assets/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- Angular + Routing + Firebase + Cookies -->
+    <script src="assets/lib/angular/angular.js"></script>
+    <script src="assets/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="assets/lib/angularfire/dist/angularfire.js"></script>
+    <script src="assets/lib/firebase/firebase.js"></script>
+    <script src="assets/lib/angular-cookies/angular-cookies.js"></script>
+    <script src="assets/lib/angular-smart-table/dist/smart-table.min.js"></script>
+    <script src="assets/lib/angular-filter/dist/angular-filter.js"></script>
+    <script src="assets/lib/ng-table-to-csv/dist/ng-table-to-csv.js"></script>
+    <script src="assets/lib/angular-google-chart/ng-google-chart.js"></script>
+
+    <!-- load momentJS (required for angular-moment) -->
+    <script src="assets/lib/moment/moment.js"></script>
+
+    <!-- load angular-moment -->
+    <script src="assets/lib/angular-moment/angular-moment.js"></script>
+    <script src="assets/lib/moment/locale/da.js"></script>
+
+    <!-- FileUpload -->
+    <script src="assets/lib/cloudinary-jquery/cloudinary-jquery.js"></script>
+    <script src="assets/lib/cloudinary_ng/js/angular.cloudinary.js"></script>
+    <script src="assets/lib/ng-file-upload/ng-file-upload.js"></script>
+    <script src="assets/js/cloudinary-config.js"></script>
+
+    <!-- Underscore -->
+    <script src="/assets/lib/lodash/lodash.min.js"></script>
+
+    <!-- Materialize/CSS -->
+    <script type="text/javascript" src="assets/lib/materialize/dist/js/materialize.js"></script>
+
+    <script type="text/javascript" src="assets/lib/angular-materialize/src/angular-materialize.js"></script>
+    <script type="text/javascript" src="assets/lib/angular-materialize/css/style.css"></script>
+</head>
+<body ng-app="app" ng-controller="IndexController as vm">
+
+    <header class="{{headerType}}" ng-class="{'kitchen-margin' :vm.isAuthenticated()}">
+        <!-- Page logo and topbar -->
+        <nav class="{{headerType}}">
+            <a ng-if="vm.isAuthenticated()" href="#" data-activates="side-nav" class="button-collapse">
+                <i class="mdi-navigation-menu" style="padding-left: 20px;"></i>
+            </a>
+            <div class="nav-wrapper">
+                <div class="row">
+                    <div class="container">
+                        <a class="brand-logo" ng-href="{{titleLink}}" ng-bind="title">Egmont kollegiet</a>
+                    </div>
+                    <ul class="right">
+                        <li class="search" ui-view="search">
+                        </li>
+                        <li ng-if="vm.isAuthenticated()">
+                            <a href='javascript:void(0);' class="waves-effect waves-light" data-activates='dropdownTopRight' data-constrain-width="false" data-beloworigin="true" dropdown><i class="mdi mdi-dots-vertical"></i></a>
+
+                            <!-- Dropdown Structure -->
+                            <ul id='dropdownTopRight' class='dropdown-content'>
+                                <li>
+                                    <a ng-click="vm.fullScreen()" href="javascript:void(0);">Toggle fuld skærm</a>
+                                </li>
+                                <li>
+                                    <a ng-click="vm.openLogoutDialog()" href="javascript:void(0);">Log ud</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div ui-view="header">
+                </div>
+            </div>
+
+        </nav>
+        <div ui-view="left-menu">
+        </div>
+        <div class="progress" ng-show="vm.loadingService.loading">
+            <div class="indeterminate"></div>
+        </div>
+    </header>
+    <div id="logoutDialog" class="modal">
+        <form class="modal-content">
+            <h4>Log ud</h4>
+            <span>Er du sikker på du vil logge ud?</span>
+        </form>
+        <div class="modal-footer">
+            <button ng-click="vm.logout()" class="waves-effect waves-light btn red modal-close modal-action">Log ud</button>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat">Fortryd</a>
+        </div>
+    </div>
+    <main ng-class="{'kitchen-margin' :vm.isAuthenticated()}" class="{{headerType}}" ui-view="main"></main>
+
+    <footer>
+        <!-- App and routing -->
+        <script src="app/app.module.js"></script>
+        <script src="app/app.routes.js"></script>
+
+        <!-- Factories and services-->
+        <script src="app/factories/auth-factory.js"></script>
+        <script src="app/factories/firebase-factory.js"></script>
+        <script src="app/factories/firebase-kitchen-factory.js"></script>
+        <script src="app/factories/file-reader.js"></script>
+        <script src="app/factories/data-grouper-factory.js"></script>
+        <script src="app/services/user-service.js"></script>
+        <script src="app/services/kitchen-service.js"></script>
+        <script src="app/services/message-service.js"></script>
+        <script src="app/services/product-service.js"></script>
+        <script src="app/services/purchase-service.js"></script>
+        <script src="app/services/accounting-service.js"></script>
+        <script src="app/services/loading-service.js"></script>
+
+        <!-- Directives -->
+        <script src="assets/lib/angular-validation-match/dist/angular-validation-match.js"></script>
+        <script src="app/shared/directives/compare-to.directive.js"></script>
+        <script src="app/shared/directives/material-select.directive.js"></script>
+        <script src="app/shared/directives/material-dropdown.directive.js"></script>
+        <script src="app/shared/directives/table-search.directive.js"></script>
+        <script src="app/shared/directives/ngFileSelect.directive.js"></script>
+        <script src="app/shared/directives/shadow.directive.js"></script>
+        <script src="app/shared/directives/export-table.directive.js"></script>
+
+        <!-- Filters -->
+        <script src="app/shared/filters/reverse-filter.js"></script>
+
+        <!-- Components/Controllers -->
+        <script src="index.js"></script>
+        <script src="app/components/kitchen/kitchen.js"></script>
+        <script src="app/components/kitchen/dorm-book/dorm-book.js"></script>
+        <script src="app/components/kitchen/accounting/accounting.js"></script>
+        <script src="app/components/kitchen/accounting/accounting-bills.js"></script>
+        <script src="app/components/kitchen/accounting/header/accounting-header.js"></script>
+        <script src="app/components/kitchen/residents/residents.js"></script>
+        <script src="app/components/kitchen/products/products.js"></script>
+        <script src="app/components/kitchen/products/products-sbsl.js"></script>
+        <script src="app/components/kitchen/products/header/products-header.js"></script>
+        <script src="app/components/kitchen/buy-page/buy-page.js"></script>
+        <script src="app/components/kitchen/statistics/statistics.js"></script>
+
+        <script src="app/components/login/login.js"></script>
+        <script src="app/components/register/register.js"></script>
+        <script src="app/components/register/kitchen/register-kitchen.js"></script>
+        <script src="app/components/register/user/register-user.js"></script>
+    </footer>
+</body>
+
+</html>

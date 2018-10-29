@@ -1,0 +1,15 @@
+﻿<div class="bottom-header" ng-controller="ProductsHeaderController as vm">
+    <div class="container">
+        <ul class="tabs" tabs>
+            <li class="tab col l6"><a id="status-tab" href="#own" ng-click="vm.state.go('kitchen.products.own')">Egne</a></li>
+            <li class="tab col l6"><a id="bills-tab" href="#sbsl" ng-click="vm.state.go('kitchen.products.sbsl')">Studenterbolaget</a></li>
+            <!--<li class="tab col l3"><a id="insight-tab" href="#insight" ng-click="vm.state.go('kitchen.accounting.insight')">Indblik</a></li>-->
+        </ul>
+    </div>
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('ul.tabs').tabs();
+    });
+</script>

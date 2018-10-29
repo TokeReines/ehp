@@ -1,0 +1,69 @@
+/*.card-content {
+    padding: 0 !important;
+}
+
+.dormuser-card {
+    height: 75px !important;
+    width: 112.5px !important;
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+
+    h5, .card-title {
+        color: white !important;
+    }
+
+    .card-title {
+        font-size: 15px;
+    }
+
+    .center {
+        padding-top: 0px;
+    }
+}
+
+.product-card:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.product-card {
+    display: inline-block;
+    height: 75px;
+    padding: 0 !important;
+    margin-bottom: 5px;
+
+    .outer-wrapper, .img-wrap, .img {
+        height: 100%;
+    }
+
+    .img-wrap {
+        width: auto !important;
+    }
+
+    .product-text {
+        h5:first-of-type {
+            margin-bottom: 0 !important;
+        }
+
+        h5:last-of-type {
+            margin-top: 5px !important;
+        }
+    }
+}
+
+table {
+    td {
+        padding: 0;
+    }
+}
+
+.button-container {
+    padding-top: 20px;
+}
+
+.element-container {
+    padding: 10px !important;
+    margin-top: 10px !important;
+    position: relative;
+}*/

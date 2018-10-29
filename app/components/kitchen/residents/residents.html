@@ -1,0 +1,132 @@
+﻿<div ng-controller="ResidentsController as vm">
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#addResidentModal" modal><i class="material-icons">add</i></a>
+    </div>
+    <div id="addResidentModal" class="modal">
+        <form name="addResidentForm" class="modal-content">
+            <h4>Ny beboer</h4>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="addname" type="text" class="validate" ng-model="vm.newResident.name" required>
+                    <label for="addname">Navn</label>
+                </div>
+                <div class="input-field col s12">
+                    <input id="addroom" type="number" class="validate" ng-model="vm.newResident.room" required>
+                    <label for="addroom">Værelse</label>
+                </div>
+            </div>
+        </form>
+        <div class="modal-footer">
+            <button ng-disabled="addResidentForm.$invalid" ng-click="vm.service.create(vm.newResident)" class="waves-effect waves-light btn modal-close modal-action">Tilføj</button>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat">Luk</a>
+        </div>
+    </div>
+    <div id="editResidentModal" class="modal">
+        <form name="editResidentForm" class="modal-content">
+            <h4>Ny beboer</h4>
+            <div class="row">
+                <div class="col s6">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="preloader-wrapper big active" ng-show="vm.uploading">
+                                <div class="spinner-layer spinner-green-only">
+                                    <div class="circle-clipper left">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <img ng-class="{'hidden': vm.editingResident.imgId && !vm.editingResidentImgSrc}" ng-src="{{vm.editingResidentImgSrc}}" class="fit medium-image" />
+                            <div ng-class="{'hidden': !vm.editingResident.imgId || vm.editingResidentImgSrc}">
+                                <cl-image public-id="{{vm.editingResident.imgId}}" class="fit medium-image">
+                                    <cl-transformation crop="fit" quality="80" format="png" />
+                                </cl-image>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="file-field input-field">
+                            <div class="btn normalize waves-effect waves-light">
+                                <span>Upload</span>
+                                <input type="file" id="file-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s6">
+                    <div class="input-field col s12">
+                        <input id="name" name="name" type="text" class="validate" ng-model="vm.editingResident.name" required>
+                        <label class="active" for="name">Navn</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="room" type="number" class="validate" ng-model="vm.editingResident.room" required>
+                        <label class="active" for="room">Værelse</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="modal-footer">
+            <button ng-disabled="editResidentForm.$invalid" ng-click="vm.editResident(vm.editingResident)" class="waves-effect waves-light btn modal-close modal-action">Gem ændringer</button>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat" ng-click="editResidentForm.name.$rollbackViewValue();">Luk</a>
+        </div>
+    </div>
+    <div id="deleteResidentModal" class="modal">
+        <form name="productForm" class="modal-content">
+            <h4>Slet produkt</h4>
+            <span>Du er ved at slette <b>{{vm.deleteResident.name}}</b>. Er du sikker på at du vil slette?</span>
+        </form>
+        <div class="modal-footer">
+            <button ng-click="vm.remove(vm.deleteResident)" class="waves-effect waves-light btn red modal-close modal-action">Slet</button>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat">Fortryd</a>
+        </div>
+    </div>
+    <table class="highlight responsive-table ehp-table" table-search="vm.service.search" st-table="vm.residents" st-safe-src="vm.safeResidents">
+        <thead>
+            <tr>
+                <th>Billede</th>
+                <th st-sort="name">Navn</th>
+                <th st-sort-default="true" st-sort="room">Værelse</th>
+                <th st-sort="active">Aktiv</th>
+                <th>Ret</th>
+                <th>Slet</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="resident in vm.residents">
+                <td>
+                    <div class="avatar" ng-show="{{!resident.imgId}}">
+                        <img src="/assets/img/avatar.png" />
+                    </div>
+                    <div ng-show="{{!!resident.imgId}}">
+                        <cl-image public-id="{{resident.imgId}}" class="avatar" crop="thumb" gravity="face" quality="50" width="55" height="55" format="png" radius="max" />
+                    </div>
+                </td>
+                <td>{{resident.name}}</td>
+                <td>{{resident.room}}</td>
+                <td>
+                    <div class="switch">
+                        <label>
+                            <input type="checkbox" ng-model="resident.active" ng-change="vm.safeResidents.$save(resident)">
+                            <span class="lever no-margin"></span>
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    <a class="waves-effect waves-teal grey-text btn-flat modal-trigger" ng-click="vm.openEditModal(resident)">
+                        <i class="material-icons">edit</i>
+                    </a>
+                </td>
+                <td>
+                    <a class="waves-effect waves-teal grey-text" ng-click="vm.openDeleteModal(resident)">
+                        <i class="material-icons">delete</i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

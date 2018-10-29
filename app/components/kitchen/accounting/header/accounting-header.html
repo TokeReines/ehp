@@ -1,0 +1,16 @@
+﻿<div class="bottom-header" ng-controller="AccountingHeaderController as vm">
+    <div class="container">
+        <ul class="tabs" tabs>
+            <!--<li class="tab col l3"><a id="overview-tab" href="#overview" ng-click="vm.state.go('kitchen.accounting.overview')">Overblik</a></li>-->
+            <li class="tab col l6"><a id="status-tab" href="#status" ng-click="vm.state.go('kitchen.accounting.status')">Nyt regnskab</a></li>
+            <li class="tab col l6"><a id="bills-tab" href="#bills" ng-click="vm.state.go('kitchen.accounting.bills')">Regnskaber<span ng-show="vm.newAccountings.length" class="new badge" >{{vm.newAccountings.length}}</span></a></li>
+            <!--<li class="tab col l3"><a id="insight-tab" href="#insight" ng-click="vm.state.go('kitchen.accounting.insight')">Indblik</a></li>-->
+        </ul>
+    </div>
+  
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('ul.tabs').tabs();
+    });
+</script>

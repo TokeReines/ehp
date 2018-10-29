@@ -1,0 +1,93 @@
+﻿<div ng-controller="AccountingController as vm">
+    <div id="addAccountModal" class="modal col s12">
+        <form name="addAccountForm" class="modal-content">
+            <h4>Nyt regnskab</h4>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="name" type="text" class="validate" ng-model="vm.newAccounting.title" required>
+                    <label for="name">Titel</label>
+                </div>
+            </div>
+        </form>
+        <div class="modal-footer">
+            <button ng-disabled="addAccountForm.$invalid" ng-click="vm.createAccounting()" class="waves-effect waves-light btn modal-close modal-action">Tilføj</button>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat">Luk</a>
+        </div>
+    </div>
+    <div name="filtering" class="container">
+        <h3 class="header">Periode</h3>
+        <div class="row no-margin">
+            <div class="col l3">
+                <label for="from-date">Fra</label>
+                <input input-date id="from-date" type="date" class="datepicker" ng-model="vm.fromDate" ng-change="vm.fromDateChange()" format="dd mmmm yyyy">
+            </div>
+            <div class="col l3">
+                <label for="to-date">Til</label>
+                <input input-date id="to-date" type="date" class="datepicker" ng-model="vm.toDate" ng-change="vm.toDateChange()" format="dd mmmm yyyy">
+            </div>
+
+            <div class="col l4" style="padding-top: 22px" href="#addAccountModal" modal>
+                <a class="btn waves-effect waves-light red modal-trigger" href="">
+                    Nyt regnskab
+                </a>
+            </div>
+        </div>
+    </div>
+    <table id="accountingTable" class="highlight responsive-table" table-search="vm.purchaseService.search" st-table="vm.statuses" st-safe-src="vm.safeStatuses" export-csv="csv" separator=";">
+        <thead>
+            <tr>
+                <th st-sort-default="true" st-sort="residentRoom">Værelse</th>
+                <th st-sort="residentName">Navn</th>
+                <th ng-repeat="prod in vm.products">{{prod.name}}</th>
+                <th st-sort="sum">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="ng-table-filters" ng-show="vm.loading">
+                <td>
+                    <div class="preloader-wrapper small active">
+                        <div class="spinner-layer spinner-red-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-show="!vm.loading" ng-repeat="value in vm.statuses | groupBy: 'userId'">
+                <td name="">{{value[0].residentRoom}}</td>
+                <td>{{value[0].residentName}}</td>
+                <td ng-repeat="prod in vm.products">{{vm.sumProduct(value, prod.$id)}}</td>
+                <td class="truncate">{{vm.sum(value, "price") | number:2}} kr</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $('.datepicker').pickadate({
+        close: "Ok",
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15 // Creates a dropdown of 15 years to control year
+    });
+
+    $('.dropdown-button').dropdown({
+        inDuration: 300,
+        outDuration: 225,
+        constrain_width: true, // Does not change width of dropdown to that of the activator
+        hover: true, // Activate on hover
+        gutter: 0, // Spacing from edge
+        belowOrigin: true, // Displays dropdown below the button
+        alignment: 'left' // Displays dropdown with edge aligned to the left of button
+    });
+
+    $(document).ready(function () {
+        $('.tooltipped').tooltip({ delay: 50 });
+    });
+
+</script>

@@ -1,0 +1,115 @@
+﻿<div ng-controller="BuyPageController as vm" >
+    <div class="row">
+        <div class="col l9 s12">
+            <div class="row ">
+                <div class="card-item col l4 s12" ng-repeat="product in vm.dormproducts  | filter:{ active: true }">
+                    <div class="outer-wrapper" ng-click="vm.selectProduct(product)">
+                        <div class="col s3 image-container">
+                            <div class="image" ng-class="{'selected': vm.selectedProduct == product}">
+                                <cl-image public-id="{{product.imgId}}" crop="thumb" quality="50" width="65" height="65" format="png" radius="max" />
+                            </div>
+                            <div class="image-text unselectable" ng-class="{'hidden': !vm.isSelected(product)}">
+                                {{vm.productCount}}
+                            </div>
+                        </div>
+                        <div class="col s7 item-text">
+                            <h5 class="truncate">{{ product.name }}</h5>
+                            <h5 class="thin condense"> {{ product.retailPrice }} kr</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="card-item col l4 s12" ng-repeat="user in vm.dormusers  | filter:{ active: true }">
+                    <div class="outer-wrapper" ng-click="vm.selectUser(user)">
+                        <div class="col s3 image-container">
+                            <div class="image" ng-class="{'selected':  vm.selectedUsers.indexOf(user) != -1}">
+                                <div class="avatar" ng-show="{{!user.imgId}}">
+                                    <img src="/assets/img/avatar.png" />
+                                </div>
+                                <div ng-show="{{!!user.imgId}}">
+                                    <cl-image public-id="{{user.imgId}}" crop="thumb" gravity="face" quality="50" width="65" height="65" format="png" radius="max" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s7 item-text">
+                            <h5>{{ user.room }}</h5>
+                            <h5 class="thin condense truncate"> {{ user.name }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ehp-basket">
+            <div class="col l3 s12 card" ng-show="vm.selectedProduct !== undefined">
+                <div class="row ehp-basket-image">
+                    <cl-image public-id="{{vm.selectedProduct.imgId}}" class="tcol s12" format="jpeg">
+                        <cl-transformation height="250" crop="scale" quality="100" />
+                    </cl-image>
+                </div>
+                <div class="row center">
+                    <h4>{{ vm.selectedProduct.name }}</h4>
+                </div>
+                <table class="ehp-table">
+                    <tbody>
+                        <tr>
+                            <td>Pris</td>
+                            <td>{{ vm.selectedProduct.retailPrice }} kr</td>
+                        </tr>
+                        <tr>
+                            <td>Antal</td>
+                            <td>{{ vm.productCount }}</td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td><b>{{ (vm.selectedProduct.retailPrice * vm.productCount) | number:2 }} kr</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="ehp-basket-buttons">
+                    <button class="col s6 btn-large waves-effect waves-light"
+                            ng-click="vm.buy()"
+                            ng-disabled="vm.selectedUsers.length <= 0 || vm.selectedProduct == undefined">
+                        Køb
+                    </button>
+                    <button class="col s6 btn-large waves-effect waves-dark red" ng-click="vm.clear()">Fortryd</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed-action-btn" data-position="left">
+        <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#historyModal" modal><i class="material-icons">list</i></a>
+    </div>
+    <div id="historyModal" class="modal bottom-sheet">
+        <div class="modal-content">
+            <div class="row">
+                <h4 class="col l9">Tidligere køb</h4>
+                <div class="col l3">
+                    <!--<a ui-sref="kitchen.accounting" class="waves-effect btn right">detaljer<i class="material-icons right">equalizer</i></a>-->
+                </div>
+            </div>
+            <table class="striped bordered highlight ehp-table">
+                <tbody>
+                    <tr ng-repeat="purchase in vm.purchases | orderBy: 'createdOn': true">
+                        <td>{{purchase.userRoom}}</td>
+                        <td>{{purchase.userName}}</td>
+                        <td>{{purchase.productName}}</td>
+                        <td><time title="{{ purchase.createdOn | amDateFormat: 'dddd, MMMM Do YYYY, HH:mm' }}">{{ purchase.createdOn | amCalendar }}</time></td>
+                        <td><a class="waves-effect secondary-content btn-flat" ng-click="vm.openDeletePurchaseModal(purchase)"><i class="material-icons">delete</i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="deletePurchaseModal" class="modal col s12">
+        <form name="productForm" class="modal-content">
+            <h4>Annullér køb</h4>
+            <span>Du er ved at annullere {{vm.deletePurchase.userName.split(' ')[0]}}s køb af {{vm.deletePurchase.productName}} d. {{vm.deletePurchase.createdOn | date:"dd/MM 'kl' HH:mm"}}. Er du sikker på at du vil slette?</span>
+        </form>
+        <div class="modal-footer">
+            <button ng-click="vm.removePurchase(vm.deletePurchase)" class="waves-effect waves-light btn red modal-close modal-action">Slet</button>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat">Fortryd</a>
+        </div>
+    </div>
+</div>

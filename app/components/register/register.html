@@ -1,0 +1,23 @@
+﻿<div class="container" ng-controller="RegisterController as vm">
+    <div class="row">
+        <div class="center-content">
+            <div class="card col s12 l4 offset-l4">
+                <div class="card-content">
+                    <span class="card-title">Er du fra Egmont?</span>
+                    <form name="loginForm">
+                        <p>Vi skal lige sikre os at du er fra Egmont Kollegiet. Indtast derfor det super hemmelige kodeord nedenunder.</p>
+                        <div class="row no-margin">
+                            <div class="input-field col s12">
+                                <input id="password" type="password" ng-model="vm.password" required>
+                                <label for="password">Super hemmeligt kodeord</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-action">
+                    <button ng-disabled="loginForm.$invalid" ng-click="vm.authAccess(vm.password)" class="btn waves-effect waves-light">Jeg er fra Egmont</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+﻿<!--<div class="input-field" ng-controller="ProductsController as vm">
+    <input ng-model="vm.service.search" id="search" class="no-validate" type="search" placeholder="Søg">
+    <label for="search"><i class="material-icons">search</i></label>
+    <i class="material-icons grey-text" ng-show="vm.service.search">close</i>
+</div>-->
+<div class="search-wrapper" ng-controller="AccountingHeaderController as vm">
+    <input id="search" type="search" class="no-validate" placeholder="Søg" ng-model="vm.purchaseService.search">
+    <i id="search-icon" class="material-icons">search</i>
+    <!--<div class="search-results"></div>-->
+</div>
+
+<script>
+    $("#search-icon").click(function () {
+        $("#search").focus();
+    });
+</script>

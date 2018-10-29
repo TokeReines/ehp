@@ -1,0 +1,52 @@
+﻿<div class="container" ng-controller="RegisterUserController as vm">
+    <div class="row">
+        <div class="card col s12 l4 offset-l4" ng-if="vm.anyUnauthedResidents() || !vm.residents.length">
+            <div class="card-content">
+                <span ng-show="vm.adminId.$value && vm.anyUnauthedResidents()" class="card-title">Tilknyt en bruger til en beboer</span>
+                <span ng-show="vm.adminId.$value && !vm.anyUnauthedResidents()" class="card-title">Endnu ingen beboere</span>
+                <span ng-show="!vm.adminId.$value" class="card-title">Registrér {{vm.kitchen}}</span>
+                <form ng-show="!vm.adminId.$value || vm.anyUnauthedResidents()" name="registerForm" ng-cloak>
+                    <div class="row">
+                        <span class="col s12" ng-if="!vm.residents.length">
+                            Du er den første der registrerer sig på dette køkken.
+                            Der er endnu ingen køkkenansvarlig på dette køkken. Opret en herunder
+                        </span>
+                        <div class="input-field col s12" ng-if="vm.anyUnauthedResidents()">
+                            <select ng-model="vm.resident" required>
+                                <option value="" disabled selected>Vælg beboer</option>
+                                <option ng-repeat="resident in vm.residents | filter: vm.emptyAuthIdFilter" md-select value="{{resident}}">{{resident.name}} ({{resident.room}})</option>
+                            </select>
+                            <label>Beboer</label>
+                        </div>
+                        <div ng-if="vm.adminId.$value"  class="input-field col s12">
+                            <input readonly id="resEmail" type="email" class="validate active" ng-model="vm.resident.email" required>
+                            <label for="resEmail">Registreret email</label>
+                        </div>
+                        <div ng-if="!vm.adminId.$value"  class="input-field col s12">
+                            <input id="email" type="email" class="validate active" ng-model="vm.email" required>
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="password" type="password" ng-model="vm.password" required>
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="repeatedPassword" type="password" ng-model="vm.repeatedPassword" compare-to="vm.password" required>
+                            <label for="repeatedPassword">Gentag password</label>
+                        </div>
+                        <span class="col s12" ng-if="!vm.residents.length">
+                            Login'et vil blive brugt til at logge på køkkencomputeren.
+                        </span>
+                        <div class="input-field col s12 no-margin" ng-if="!vm.residents.length">
+                            <input type="checkbox" class="filled-in" id="filled-in-box" ng-model="vm.isAdmin" required/>
+                            <label for="filled-in-box">Jeg er administrator for {{vm.kitchen}}</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div ng-hide="vm.adminId.$value && !vm.anyUnauthedResidents()" class="card-action">
+                <button ng-disabled="registerForm.$invalid" ng-click="vm.register()" class="btn waves-effect waves-light">Registrer</button>
+            </div>
+        </div>
+    </div>
+</div>

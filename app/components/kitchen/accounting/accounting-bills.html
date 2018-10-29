@@ -1,0 +1,49 @@
+﻿<div ng-controller="AccountingBillsController as vm">
+    <div class="col l4" style="padding-top: 22px">
+    </div>
+    <ul class="collection highlight" data-collapsible="expandable">
+        <li ng-repeat="accounting in vm.accountings | filter:{ $id: '!new'}">
+            <div class="collapsible-header row">
+                <div class="col l12">
+                    <div class="col l10">
+                        {{accounting.name}}
+                    </div>
+                    <div class="col l1">
+                        <a class="waves-effect right btn-flat no-propagate btn-square" data-tooltip="Download gangregning"
+                           ng-click="csv.generate();vm.downloadAccounting(accounting.$id);"
+                           ng-href="{{ csv.link() }}"
+                           download="{{accounting.name}}.csv">
+                            <i class="right material-icons" style="line-height: inherit !important">play_for_work</i>
+                        </a>
+                    </div>
+                    <div class="col l1">
+                        <a class="waves-effect right btn-flat no-propagate btn-square" data-tooltip="Slet gangregning"
+                           ng-click="vm.deleteAccounting(accounting)">
+                            <i class="right material-icons" style="line-height: inherit !important">delete</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="collapsible-body">
+                <table class="bordered centered highlight" style="background-color: #eceff1;" export-csv="csv" separator=",">
+                    <thead>
+                        <tr>
+                            <th>Værelse</th>
+                            <th>Navn</th>
+                            <th ng-repeat="prodName in vm.getProductNames(accounting.statuses[0])">{{prodName}}</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="status in accounting.statuses" ng-init="$last && vm.statusesLoaded()">
+                            <td>{{status.residentRoom}}</td>
+                            <td>{{status.residentName}}</td>
+                            <td ng-repeat="prodName in vm.getProductNames(status)">{{status[prodName]}}</td>
+                            <td>{{status.status}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ul>
+</div>
